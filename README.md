@@ -25,7 +25,8 @@ You need 3 free accounts: **Supabase** (database), **GitHub** (stores the code),
    - `VITE_SUPABASE_URL` = your Project URL
    - `VITE_SUPABASE_ANON_KEY` = your anon public key
    - `NODE_VERSION` = `20`
-4. **Save and Deploy**. After ~2 minutes you get an address like `luxchina.pages.dev`.
+4. If Cloudflare shows a **Deploy command** field, keep its default (`npx wrangler deploy`). The project uses Vite 6, which Cloudflare can configure automatically.
+5. **Save and Deploy**. After ~2 minutes you get an address like `luxchina.pages.dev`.
 
 ## Step 4 — First use
 1. Open `https://YOUR-ADDRESS/admin`, log in with the email and password from Step 1.

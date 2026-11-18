@@ -1,0 +1,10 @@
+{
+  // Static site (React + Vite). The built files in ./dist are served by Cloudflare Workers Static Assets.
+  // "name" must match the Worker's name in the Cloudflare dashboard.
+  "name": "luxchina",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}

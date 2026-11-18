@@ -21,7 +21,7 @@ You need 3 free accounts: **Supabase** (database), **GitHub** (stores the code),
 ## Step 3 — Publish (Cloudflare Pages), ~10 min
 1. dash.cloudflare.com → sign up → **Workers & Pages → Create → Pages → Connect to Git** → choose your `luxchina` repository.
 2. Framework preset: **Vite** (or None). Build command: `npm run build`. Output directory: `dist`.
-3. **Environment variables** — add three:
+3. **Build variables** (Worker → Settings → **Build** → *Variables and secrets*; NOT the Variables block at the top of the Settings page, which is blocked for static sites and is not needed) — add three. After any change, run **Retry build**:
    - `VITE_SUPABASE_URL` = your Project URL
    - `VITE_SUPABASE_ANON_KEY` = your anon public key
    - `NODE_VERSION` = `20`

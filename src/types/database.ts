@@ -1,5 +1,6 @@
 // Mirrors supabase/migrations/001_schema.sql exactly.
 export type ProductType = 'in_stock' | 'by_order'
+export type PaymentStatus = 'pending' | 'paid'
 export type OrderStatus =
   | 'new' | 'confirmed' | 'ordered_from_china' | 'in_transit'
   | 'arrived' | 'delivered' | 'cancelled'
@@ -32,7 +33,7 @@ export interface Product {
 export interface Order {
   id: string; order_number: string
   customer_name: string; phone: string; city: string; address: string; comment: string
-  status: OrderStatus; total: number; created_at: string; updated_at: string
+  status: OrderStatus; payment_status: PaymentStatus; total: number; created_at: string; updated_at: string
 }
 
 export interface OrderItem {
@@ -45,7 +46,9 @@ export interface CreateOrderInput {
   customer: { name: string; phone: string; city: string; address: string; comment?: string }
   items: { product_id: string; quantity: number; size?: string | null; color?: string | null }[]
 }
-export interface CreateOrderResult { order_number: string; total: number }
+export interface OrderLine { name_tj: string; name_ru: string; size: string | null; color: string | null; quantity: number; unit_price: number }
+// `items` is returned once supabase/6_ORDER_RETURNS_ITEMS.sql is applied
+export interface CreateOrderResult { order_number: string; total: number; items?: OrderLine[] }
 
 // admin_stats() -> jsonb
 export interface AdminStats {

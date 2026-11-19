@@ -6,7 +6,7 @@ import type { DictKey } from '../i18n/dict'
 import { money } from '../lib/products'
 import { supabase } from '../lib/supabase'
 import { useLoad } from '../lib/useLoad'
-import { ORDER_STATUSES, type OrderStatus } from '../types/database'
+import { ORDER_STATUSES, type OrderStatus, type PaymentStatus } from '../types/database'
 import { adminOrder, adminOrders } from './db'
 
 const COLORS: Record<OrderStatus, string> = {
@@ -16,6 +16,11 @@ const COLORS: Record<OrderStatus, string> = {
 export function StatusBadge({ s }: { s: OrderStatus }) {
   const { t } = useLang()
   return <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${COLORS[s]}`}>{t(`status.${s}` as DictKey)}</span>
+}
+
+export function PayBadge({ p }: { p: PaymentStatus }) {
+  const { t } = useLang()
+  return <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${p === 'paid' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}`}>{p === 'paid' ? t('a.payPaid') : t('a.payPending')}</span>
 }
 
 export function Orders() {
@@ -37,8 +42,8 @@ export function Orders() {
       <ul className="divide-y rounded-xl bg-white shadow-sm">
         {items.map((o) => (
           <li key={o.id}><Link to={`/admin/orders/${o.id}`} className="flex flex-wrap items-center justify-between gap-2 p-3 text-sm hover:bg-neutral-50">
-            <span><b>{o.order_number}</b> · {o.customer_name}<br /><span className="text-neutral-500">{o.phone} · {o.city} · {new Date(o.created_at).toLocaleDateString('ru-RU')}</span></span>
-            <span className="flex items-center gap-3 font-medium">{money(o.total)}<StatusBadge s={o.status} /></span>
+            <span><b>{o.order_number}</b> · {o.customer_name}<br /><span className="text-neutral-500">{[o.phone, o.city].filter(Boolean).join(' · ')} · {new Date(o.created_at).toLocaleDateString('ru-RU')}</span></span>
+            <span className="flex items-center gap-3 font-medium">{money(o.total)}<PayBadge p={o.payment_status} /><StatusBadge s={o.status} /></span>
           </Link></li>
         ))}
       </ul>
@@ -62,6 +67,12 @@ export function OrderDetail() {
     const { error: e } = await supabase.from('orders').update({ status: s }).eq('id', o.id)
     if (e) setErr(e.message); else { setMsg(t('a.saved')); setTick(tick + 1) }
   }
+  const changePay = async (p: PaymentStatus) => {
+    if (p === o.payment_status) return
+    setErr(''); setMsg('')
+    const { error: e } = await supabase.from('orders').update({ payment_status: p }).eq('id', o.id)
+    if (e) setErr(e.message); else { setMsg(t('a.saved')); setTick(tick + 1) }
+  }
   return (
     <div className="mx-auto max-w-2xl space-y-4">
       <Link to="/admin/orders" className="text-sm text-neutral-500">← {t('a.back')}</Link>
@@ -71,8 +82,8 @@ export function OrderDetail() {
         <dl className="mt-4 space-y-1 text-sm">
           <div><dt className="inline font-medium">{t('a.customer')}: </dt><dd className="inline">{o.customer_name}</dd></div>
           <div><dt className="inline font-medium">{t('checkout.phone')}: </dt><dd className="inline"><a className="text-brand-red underline" href={`tel:${o.phone}`}>{o.phone}</a></dd></div>
-          <div><dt className="inline font-medium">{t('checkout.city')}: </dt><dd className="inline">{o.city}</dd></div>
-          <div><dt className="inline font-medium">{t('checkout.address')}: </dt><dd className="inline">{o.address}</dd></div>
+          {o.city && <div><dt className="inline font-medium">{t('checkout.city')}: </dt><dd className="inline">{o.city}</dd></div>}
+          {o.address && <div><dt className="inline font-medium">{t('checkout.address')}: </dt><dd className="inline">{o.address}</dd></div>}
           {o.comment && <div><dt className="inline font-medium">{t('checkout.comment')}: </dt><dd className="inline">{o.comment}</dd></div>}
         </dl>
       </div>
@@ -87,6 +98,11 @@ export function OrderDetail() {
         <select className={input} value={o.status} disabled={locked} onChange={(e) => change(e.target.value as OrderStatus)}>
           {ORDER_STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}` as DictKey)}</option>)}</select>
         {locked && <p className="mt-2 text-xs text-neutral-500">{t('a.cancelLocked')}</p>}
+      </div>
+      <div className="rounded-xl bg-white p-5 shadow-sm">
+        <label className="mb-2 block text-sm font-medium">{t('a.payment')}</label>
+        <select className={input} value={o.payment_status} disabled={locked} onChange={(e) => changePay(e.target.value as PaymentStatus)}>
+          <option value="pending">{t('a.payPending')}</option><option value="paid">{t('a.payPaid')}</option></select>
         {msg && <p className="mt-2 text-sm text-green-700">{msg}</p>}{err && <p className="mt-2 text-sm text-brand-red">{err}</p>}
       </div>
     </div>

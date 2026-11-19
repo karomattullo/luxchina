@@ -51,3 +51,21 @@ You need 3 free accounts: **Supabase** (database), **GitHub** (stores the code),
 - [ ] Tajik wording reviewed by a native speaker (`src/i18n/dict.ts`)
 - [ ] No spam protection on checkout yet — watch the orders list
 - [ ] Optional: custom domain, product photo sizes, backups (Supabase free plan pauses after a week of no activity)
+
+## Update: WhatsApp ordering (run once on your existing database)
+1. Supabase → **SQL Editor** → New query → paste the whole file `supabase/4_UPDATE_WHATSAPP_ORDERS.sql` → **Run** (must say *Success*).
+   New installs: run `1_SETUP_DATABASE.sql` first, then this file.
+2. Upload the changed files to GitHub; Cloudflare rebuilds automatically.
+3. Test: place an order → it is saved → WhatsApp opens with the Tajik message → in `/admin` the order shows payment **Pending**; set it to **Paid** after you receive the receipt.
+
+## Update: stock fix on cancelled orders (run once on your existing database)
+Fixes a bug: if one order contained the same product in two sizes/colors, cancelling it returned the stock for only one of them.
+1. Supabase → **SQL Editor** → **New query** → paste the whole file `supabase/5_FIX_CANCEL_RESTOCK.sql` → **Run** (must say *Success*).
+2. New installs: `1_SETUP_DATABASE.sql` already contains the fix, then run `4_UPDATE_WHATSAPP_ORDERS.sql`. You do not need file 5.
+3. Orders you cancelled earlier are not corrected automatically. If any of them had the same product in two lines, check that product's stock in `/admin → Products` and correct it by hand.
+
+## Update: WhatsApp message uses the saved (server) prices — run once on your existing database
+1. Supabase → **SQL Editor** → New query → paste the whole file `supabase/6_ORDER_RETURNS_ITEMS.sql` → **Run** (must say *Success*).
+   Run it after files 4 and 5. New installs: 1, then 4, then 6 (5 is already inside 1).
+2. Upload the changed files to GitHub; Cloudflare rebuilds.
+Until file 6 is applied, checkout still works and WhatsApp opens, but the message takes line prices from the customer's cart instead of the database.

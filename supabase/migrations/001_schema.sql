@@ -207,9 +207,13 @@ create or replace function restore_stock_on_cancel() returns trigger
 language plpgsql security definer set search_path = public as $$
 begin
   if new.status = 'cancelled' and old.status <> 'cancelled' then
-    update products p set stock_quantity = p.stock_quantity + oi.quantity
-    from order_items oi
-    where oi.order_id = new.id and oi.product_id = p.id and p.product_type = 'in_stock';
+    -- Sum quantities per product first: the same product can appear in several lines (different size/color).
+    update products p set stock_quantity = p.stock_quantity + s.qty
+    from (select product_id, sum(quantity)::int as qty
+            from order_items
+           where order_id = new.id and product_id is not null
+           group by product_id) s
+    where p.id = s.product_id and p.product_type = 'in_stock';
   end if;
   return new;
 end $$;

@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { useLang } from '../i18n'
 import type { DictKey } from '../i18n/dict'
@@ -9,12 +9,26 @@ import type { TrackedOrder } from '../types/database'
 
 export default function Track() {
   const { orderNumber } = useParams()
-  const fresh = (useLocation().state as { fresh?: boolean } | null)?.fresh
+  const st = useLocation().state as { fresh?: boolean; wa?: string } | null
+  const fresh = st?.fresh
+  const wa = st?.wa
   const { t } = useLang()
   const [num, setNum] = useState(orderNumber ?? '')
   const [phone, setPhone] = useState('')
   const [res, setRes] = useState<TrackedOrder | null>(null)
   const [msg, setMsg] = useState('')
+
+  // Right after a saved order: open WhatsApp once (the visible button below is the fallback).
+  useEffect(() => {
+    if (!fresh || !wa || !orderNumber) return
+    const k = `luxchina.wa.${orderNumber}`
+    try { if (sessionStorage.getItem(k)) return } catch { /* ignore */ }
+    const id = window.setTimeout(() => {
+      try { sessionStorage.setItem(k, '1') } catch { /* ignore */ }
+      window.location.href = wa
+    }, 1200)
+    return () => window.clearTimeout(id)
+  }, [fresh, wa, orderNumber])
 
   const submit = async (e: FormEvent) => {
     e.preventDefault(); setMsg(''); setRes(null)
@@ -30,6 +44,8 @@ export default function Track() {
           <p className="text-sm text-neutral-600">{t('order.number')}</p>
           <p className="text-3xl font-bold text-brand-red">{orderNumber}</p>
           <p className="mt-2 text-sm">{t('order.thanks')}</p>
+          <p className="mt-2 text-sm">{t('order.payNote')}</p>
+          {wa && <a href={wa} className={`${btn} mt-4`}>{t('order.openWa')}</a>}
         </div>
       )}
       <h1 className="text-2xl font-bold">{t('track.title')}</h1>

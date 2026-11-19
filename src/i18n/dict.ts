@@ -17,6 +17,10 @@ const tj = {
   'admin.login': 'Воридшавӣ',
   'checkout.title': 'Расмикунонии фармоиш',
   'checkout.success': 'Фармоиш қабул шуд',
+  'checkout.review': 'Фармоиши шумо',
+  'checkout.confirm': 'Тасдиқ ва кушодани WhatsApp',
+  'checkout.waNote': 'Пас аз тасдиқ WhatsApp бо паёми омода кушода мешавад. Тугмаи Send-ро худатон пахш кунед. Маълумоти пардохтро соҳиби мағоза дар WhatsApp мефиристад.',
+  'checkout.each': 'барои 1 дона',
   'nav.track': 'Пайгирӣ',
   'home.heroTitle': 'Маҳсулоти Чин — ба Тоҷикистон',
   'home.heroSub': 'Фармоиш диҳед ё маҳсулоти мавҷударо харед',
@@ -124,6 +128,13 @@ const tj = {
   'a.noProducts': 'Маҳсулоте нест.',
   'a.cancelLocked': 'Фармоиши бекоршударо тағйир додан мумкин нест.',
   'a.confirmCancel': 'Бекор кардани фармоиш бозгашт надорад. Идома диҳем?',
+  'checkout.phoneWa': 'WhatsApp / рақами телефон',
+  'checkout.addressOpt': 'Суроғаи таҳвил (ихтиёрӣ)',
+  'order.openWa': 'Кушодани WhatsApp',
+  'order.payNote': 'Маълумоти пардохтро соҳиби мағоза тавассути WhatsApp мефиристад.',
+  'a.payment': 'Пардохт',
+  'a.payPending': 'Интизор (pending)',
+  'a.payPaid': 'Пардохт шуд (paid)',
 } as const
 
 export type DictKey = keyof typeof tj
@@ -145,6 +156,10 @@ const ru: Record<DictKey, string> = {
   'admin.login': 'Вход',
   'checkout.title': 'Оформление заказа',
   'checkout.success': 'Заказ принят',
+  'checkout.review': 'Ваш заказ',
+  'checkout.confirm': 'Подтвердить и открыть WhatsApp',
+  'checkout.waNote': 'После подтверждения откроется WhatsApp с готовым сообщением. Кнопку «Отправить» нажмёте вы сами. Реквизиты для оплаты магазин пришлёт в WhatsApp.',
+  'checkout.each': 'за 1 шт.',
   'nav.track': 'Отслеживание',
   'home.heroTitle': 'Товары из Китая — в Таджикистан',
   'home.heroSub': 'Заказывайте из Китая или покупайте товары в наличии',
@@ -252,6 +267,13 @@ const ru: Record<DictKey, string> = {
   'a.noProducts': 'Товаров нет.',
   'a.cancelLocked': 'Отменённый заказ изменить нельзя.',
   'a.confirmCancel': 'Отмена заказа необратима. Продолжить?',
+  'checkout.phoneWa': 'WhatsApp / телефон',
+  'checkout.addressOpt': 'Адрес доставки (необязательно)',
+  'order.openWa': 'Открыть WhatsApp',
+  'order.payNote': 'Реквизиты для оплаты магазин пришлёт в WhatsApp.',
+  'a.payment': 'Оплата',
+  'a.payPending': 'Ожидает (pending)',
+  'a.payPaid': 'Оплачено (paid)',
 }
 
 export const dictionaries: Record<Lang, Record<DictKey, string>> = { tj, ru }

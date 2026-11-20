@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom'
+import { btn } from '../components/ui'
 import { useLang } from '../i18n'
 
 export default function NotFound() {
   const { t } = useLang()
   return (
-    <section className="py-16 text-center">
-      <h1 className="text-2xl font-bold">{t('common.notFound')}</h1>
-      <Link to="/" className="mt-6 inline-block rounded-full bg-brand-red px-6 py-2 text-sm font-semibold text-white">
-        {t('common.backHome')}
-      </Link>
+    <section className="animate-fade-up py-16 text-center">
+      <p className="text-7xl font-extrabold text-brand-red">404</p>
+      <h1 className="mt-2 text-xl font-bold">{t('common.notFound')}</h1>
+      <Link to="/" className={`${btn} mt-6`}>{t('common.backHome')}</Link>
     </section>
   )
 }

@@ -42,8 +42,8 @@ export default function Checkout() {
     </label>
   )
   return (
-    <form onSubmit={submit} className="mx-auto max-w-lg space-y-4">
-      <h1 className="text-2xl font-bold">{t('checkout.title')}</h1>
+    <form onSubmit={submit} className="mx-auto max-w-lg animate-fade-up space-y-4 rounded-3xl bg-white p-5 shadow-card md:p-8">
+      <h1 className="text-2xl font-extrabold md:text-3xl">{t('checkout.title')}</h1>
       {field('name', 'checkout.name')}{field('phone', 'checkout.phoneWa')}
       {field('address', 'checkout.addressOpt', false)}{field('comment', 'checkout.comment', false)}
 
@@ -58,11 +58,11 @@ export default function Checkout() {
             </li>
           ))}
         </ul>
-        <p className="mt-3 flex justify-between text-lg font-bold"><span>{t('cart.total')}</span><span>{money(total)}</span></p>
+        <p className="mt-3 flex justify-between text-lg font-extrabold"><span>{t('cart.total')}</span><span>{money(total)}</span></p>
       </section>
 
       <p className="text-xs text-neutral-500">{t('checkout.waNote')}</p>
-      {err && <p className="rounded-lg bg-red-50 p-3 text-sm text-brand-red">{err}</p>}
+      {err && <p className="rounded-xl bg-red-50 p-3 text-sm text-brand-red">{err}</p>}
       <button disabled={busy} className={`${btn} w-full`}>{busy ? t('checkout.sending') : t('checkout.confirm')}</button>
     </form>
   )

@@ -39,10 +39,10 @@ export function Products() {
       </div>
       {loading && <Loading />}{(error || err) && <ErrorBox msg={error ?? err} />}
       {!loading && !items.length && <p className="py-10 text-center text-neutral-500">{t('a.noProducts')}</p>}
-      <ul className="divide-y rounded-xl bg-white shadow-sm">
+      <ul className="divide-y rounded-2xl bg-white shadow-card">
         {items.map((p) => (
           <li key={p.id} className="flex items-center gap-3 p-3 text-sm">
-            <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-brand-gray">{p.images[0] && <img src={p.images[0]} alt="" className="h-full w-full object-cover" />}</div>
+            <div className="h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-brand-gray">{p.images[0] && <img src={p.images[0]} alt="" className="h-full w-full object-cover" />}</div>
             <div className="min-w-0 flex-1">
               <p className="truncate font-medium">{pick(p, 'name')} {!p.is_published && <span className="text-xs text-neutral-400">({t('a.hidden')})</span>}</p>
               <p className="text-neutral-500">{money(finalPrice(p))} · {p.product_type === 'in_stock' ? `${t('availability.in_stock')}: ${p.stock_quantity}` : t('availability.by_order')}</p>
@@ -110,7 +110,7 @@ export function ProductForm() {
   }
   if (!ready) return <Loading />
   return (
-    <form onSubmit={submit} className="mx-auto max-w-2xl space-y-4 rounded-xl bg-white p-5 shadow-sm">
+    <form onSubmit={submit} className="mx-auto max-w-2xl space-y-4 rounded-2xl bg-white p-5 shadow-card">
       <div className="grid gap-4 md:grid-cols-2">
         <L label={t('a.nameTj')}><input className={input} required value={f.name_tj} onChange={txt('name_tj')} /></L>
         <L label={t('a.nameRu')}><input className={input} required value={f.name_ru} onChange={txt('name_ru')} /></L>
@@ -130,7 +130,7 @@ export function ProductForm() {
         <p className="mb-2 text-sm font-medium">{t('a.images')}</p>
         <div className="flex flex-wrap gap-2">
           {images.map((u) => (
-            <div key={u} className="relative h-20 w-20 overflow-hidden rounded-lg bg-brand-gray">
+            <div key={u} className="relative h-20 w-20 overflow-hidden rounded-xl bg-brand-gray">
               <img src={u} alt="" className="h-full w-full object-cover" />
               <button type="button" aria-label="remove" onClick={() => setImages(images.filter((x) => x !== u))} className="absolute right-0.5 top-0.5 rounded-full bg-black/70 px-1.5 text-xs text-white">×</button>
             </div>
@@ -144,7 +144,7 @@ export function ProductForm() {
         <label><input type="checkbox" checked={f.is_featured} onChange={chk('is_featured')} /> {t('a.featured')}</label>
         <label><input type="checkbox" checked={f.is_published} onChange={chk('is_published')} /> {t('a.published')}</label>
       </div>
-      {err && <p className="rounded-lg bg-red-50 p-3 text-sm text-brand-red">{err}</p>}
+      {err && <p className="rounded-xl bg-red-50 p-3 text-sm text-brand-red">{err}</p>}
       <div className="flex gap-3"><button disabled={busy} className={btn}>{busy ? t('a.saving') : t('a.save')}</button><Link to="/admin/products" className="px-4 py-3 text-sm">{t('a.back')}</Link></div>
     </form>
   )

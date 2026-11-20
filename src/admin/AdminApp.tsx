@@ -46,10 +46,10 @@ function Login() {
   const [err, setErr] = useState(false); const [busy, setBusy] = useState(false)
   const submit = async (e: FormEvent) => { e.preventDefault(); setBusy(true); setErr(!(await login(email.trim(), pw))); setBusy(false) }
   return (
-    <div className="flex min-h-screen items-center justify-center bg-neutral-50 px-4">
-      <form onSubmit={submit} className="w-full max-w-sm space-y-4 rounded-2xl bg-white p-6 shadow">
+    <div className="flex min-h-screen items-center justify-center bg-brand-gray px-4">
+      <form onSubmit={submit} className="w-full max-w-sm animate-fade-up space-y-4 rounded-3xl bg-white p-6 shadow-lift">
         <img src="/logo.png" alt="LUXCHINA" className="mx-auto h-24" />
-        <h1 className="text-center text-lg font-bold">{t('admin.login')}</h1>
+        <h1 className="text-center text-lg font-extrabold">{t('admin.login')}</h1>
         <input className={input} type="email" required autoComplete="username" placeholder={t('a.email')} value={email} onChange={(e) => setEmail(e.target.value)} />
         <input className={input} type="password" required autoComplete="current-password" placeholder={t('a.password')} value={pw} onChange={(e) => setPw(e.target.value)} />
         {err && <p className="text-sm text-brand-red">{t('a.loginFail')}</p>}
@@ -68,12 +68,12 @@ const NAV: { to: string; key: DictKey; end?: boolean }[] = [
 function Shell({ children }: { children: ReactNode }) {
   const { t } = useLang(); const { logout } = useAuth()
   return (
-    <div className="min-h-screen bg-neutral-50">
-      <header className="border-b bg-white">
+    <div className="min-h-screen bg-brand-gray">
+      <header className="sticky top-0 z-30 border-b border-neutral-100 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-2">
           <Link to="/admin"><img src="/logo.png" alt="LUXCHINA" className="h-10" /></Link>
           <nav className="flex flex-1 gap-4 overflow-x-auto text-sm font-medium">
-            {NAV.map((n) => <NavLink key={n.to} to={n.to} end={n.end} className={({ isActive }) => `whitespace-nowrap py-2 ${isActive ? 'text-brand-red' : ''}`}>{t(n.key)}</NavLink>)}
+            {NAV.map((n) => <NavLink key={n.to} to={n.to} end={n.end} className={({ isActive }) => `whitespace-nowrap rounded-full px-3 py-1.5 transition ${isActive ? 'bg-brand-red text-white' : 'hover:bg-brand-gray'}`}>{t(n.key)}</NavLink>)}
           </nav>
           <LangSwitcher />
           <Link to="/" className="hidden text-sm text-neutral-500 sm:block">{t('a.store')}</Link>
@@ -86,7 +86,7 @@ function Shell({ children }: { children: ReactNode }) {
 }
 
 function Stat({ label, value }: { label: string; value: string | number }) {
-  return <div className="rounded-xl bg-white p-4 shadow-sm"><p className="text-xs text-neutral-500">{label}</p><p className="mt-1 text-2xl font-bold">{value}</p></div>
+  return <div className="rounded-2xl border-l-4 border-brand-red bg-white p-4 shadow-card"><p className="text-xs text-neutral-500">{label}</p><p className="mt-1 text-2xl font-extrabold md:text-3xl">{value}</p></div>
 }
 
 function Dashboard() {
@@ -105,10 +105,10 @@ function Dashboard() {
         <Stat label={t('a.statStock')} value={tracked.reduce((n, p) => n + p.stock_quantity, 0)} />
         <Stat label={t('a.statOut')} value={tracked.filter((p) => p.stock_quantity === 0).length} />
       </div>
-      <h2 className="mb-3 mt-8 text-lg font-bold">{t('a.recent')}</h2>
-      <ul className="divide-y rounded-xl bg-white shadow-sm">
+      <h2 className="mb-3 mt-8 text-lg font-extrabold">{t('a.recent')}</h2>
+      <ul className="divide-y rounded-2xl bg-white shadow-card">
         {(orders.data ?? []).slice(0, 5).map((o) => (
-          <li key={o.id}><Link to={`/admin/orders/${o.id}`} className="flex items-center justify-between gap-2 p-3 text-sm hover:bg-neutral-50">
+          <li key={o.id}><Link to={`/admin/orders/${o.id}`} className="flex items-center justify-between gap-2 p-3 text-sm hover:bg-brand-gray">
             <span><b>{o.order_number}</b> · {o.customer_name}</span><span className="flex items-center gap-3">{money(o.total)}<StatusBadge s={o.status} /></span>
           </Link></li>
         ))}

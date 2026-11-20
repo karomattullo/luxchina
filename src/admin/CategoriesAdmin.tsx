@@ -44,7 +44,7 @@ export default function CategoriesAdmin() {
   return (
     <div>
       {(error || err) && <div className="mb-3"><ErrorBox msg={error ?? err} /></div>}
-      <div className="divide-y rounded-xl bg-white shadow-sm">
+      <div className="divide-y rounded-2xl bg-white shadow-card">
         {data?.map((c) => <Row key={c.id + c.slug} c={c} onDone={() => setTick(tick + 1)} onErr={setErr} />)}
         <Row onDone={() => setTick(tick + 1)} onErr={setErr} />
       </div>

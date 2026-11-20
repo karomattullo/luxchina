@@ -38,9 +38,9 @@ export default function Track() {
     } catch { setMsg(t('err.generic')) }
   }
   return (
-    <div className="mx-auto max-w-lg">
+    <div className="mx-auto max-w-lg animate-fade-up">
       {fresh && orderNumber && (
-        <div className="mb-6 rounded-xl bg-brand-gray p-5 text-center">
+        <div className="mb-6 rounded-2xl bg-brand-gray p-5 text-center">
           <p className="text-sm text-neutral-600">{t('order.number')}</p>
           <p className="text-3xl font-bold text-brand-red">{orderNumber}</p>
           <p className="mt-2 text-sm">{t('order.thanks')}</p>
@@ -48,7 +48,7 @@ export default function Track() {
           {wa && <a href={wa} className={`${btn} mt-4`}>{t('order.openWa')}</a>}
         </div>
       )}
-      <h1 className="text-2xl font-bold">{t('track.title')}</h1>
+      <h1 className="text-2xl font-extrabold md:text-3xl">{t('track.title')}</h1>
       <form onSubmit={submit} className="mt-4 space-y-3">
         <input className={input} required value={num} onChange={(e) => setNum(e.target.value)} placeholder={t('order.number')} />
         <input className={input} required type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder={t('checkout.phone')} />
@@ -56,7 +56,7 @@ export default function Track() {
       </form>
       {msg && <p className="mt-4 text-sm text-brand-red">{msg}</p>}
       {res && (
-        <div className="mt-6 rounded-xl border border-neutral-200 p-5 text-sm">
+        <div className="mt-6 rounded-2xl border border-neutral-100 p-5 text-sm shadow-card">
           <p className="font-bold">{res.order_number}</p>
           <p className="mt-1">{t('track.status')}: <span className="font-semibold text-brand-red">{t(`status.${res.status}` as DictKey)}</span></p>
           <ul className="mt-3 divide-y">{res.items.map((i, k) => (

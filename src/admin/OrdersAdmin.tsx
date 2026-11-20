@@ -39,9 +39,9 @@ export function Orders() {
       </div>
       {loading && <Loading />}{error && <ErrorBox msg={error} />}
       {!loading && !items.length && <p className="py-10 text-center text-neutral-500">{t('a.noOrders')}</p>}
-      <ul className="divide-y rounded-xl bg-white shadow-sm">
+      <ul className="divide-y rounded-2xl bg-white shadow-card">
         {items.map((o) => (
-          <li key={o.id}><Link to={`/admin/orders/${o.id}`} className="flex flex-wrap items-center justify-between gap-2 p-3 text-sm hover:bg-neutral-50">
+          <li key={o.id}><Link to={`/admin/orders/${o.id}`} className="flex flex-wrap items-center justify-between gap-2 p-3 text-sm hover:bg-brand-gray">
             <span><b>{o.order_number}</b> · {o.customer_name}<br /><span className="text-neutral-500">{[o.phone, o.city].filter(Boolean).join(' · ')} · {new Date(o.created_at).toLocaleDateString('ru-RU')}</span></span>
             <span className="flex items-center gap-3 font-medium">{money(o.total)}<PayBadge p={o.payment_status} /><StatusBadge s={o.status} /></span>
           </Link></li>
@@ -76,8 +76,8 @@ export function OrderDetail() {
   return (
     <div className="mx-auto max-w-2xl space-y-4">
       <Link to="/admin/orders" className="text-sm text-neutral-500">← {t('a.back')}</Link>
-      <div className="rounded-xl bg-white p-5 shadow-sm">
-        <div className="flex flex-wrap items-center justify-between gap-2"><h1 className="text-xl font-bold">{o.order_number}</h1><StatusBadge s={o.status} /></div>
+      <div className="rounded-2xl bg-white p-5 shadow-card">
+        <div className="flex flex-wrap items-center justify-between gap-2"><h1 className="text-xl font-extrabold">{o.order_number}</h1><StatusBadge s={o.status} /></div>
         <p className="mt-1 text-xs text-neutral-500">{new Date(o.created_at).toLocaleString('ru-RU')}</p>
         <dl className="mt-4 space-y-1 text-sm">
           <div><dt className="inline font-medium">{t('a.customer')}: </dt><dd className="inline">{o.customer_name}</dd></div>
@@ -87,19 +87,19 @@ export function OrderDetail() {
           {o.comment && <div><dt className="inline font-medium">{t('checkout.comment')}: </dt><dd className="inline">{o.comment}</dd></div>}
         </dl>
       </div>
-      <div className="rounded-xl bg-white p-5 shadow-sm">
+      <div className="rounded-2xl bg-white p-5 shadow-card">
         <h2 className="mb-2 font-bold">{t('a.items')}</h2>
         <ul className="divide-y text-sm">{items.map((i) => (
           <li key={i.id} className="flex justify-between gap-3 py-2"><span>{i.product_name} {[i.size, i.color].filter(Boolean).join(' · ')} × {i.quantity}</span><span>{money(i.unit_price * i.quantity)}</span></li>))}</ul>
-        <p className="mt-3 flex justify-between text-lg font-bold"><span>{t('cart.total')}</span><span>{money(o.total)}</span></p>
+        <p className="mt-3 flex justify-between text-lg font-extrabold"><span>{t('cart.total')}</span><span>{money(o.total)}</span></p>
       </div>
-      <div className="rounded-xl bg-white p-5 shadow-sm">
+      <div className="rounded-2xl bg-white p-5 shadow-card">
         <label className="mb-2 block text-sm font-medium">{t('track.status')}</label>
         <select className={input} value={o.status} disabled={locked} onChange={(e) => change(e.target.value as OrderStatus)}>
           {ORDER_STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}` as DictKey)}</option>)}</select>
         {locked && <p className="mt-2 text-xs text-neutral-500">{t('a.cancelLocked')}</p>}
       </div>
-      <div className="rounded-xl bg-white p-5 shadow-sm">
+      <div className="rounded-2xl bg-white p-5 shadow-card">
         <label className="mb-2 block text-sm font-medium">{t('a.payment')}</label>
         <select className={input} value={o.payment_status} disabled={locked} onChange={(e) => changePay(e.target.value as PaymentStatus)}>
           <option value="pending">{t('a.payPending')}</option><option value="paid">{t('a.payPaid')}</option></select>
